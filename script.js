@@ -1,13 +1,30 @@
 // Get references to DOM elements
 const searchButton = document.getElementById("searchBtn");
+const locationButton = document.getElementById("locationBtn");
 const cityName = document.getElementById("cityName");
 const weatherDetails = document.getElementById("weatherDetails");
 
-// Function to fetch weather data
-async function getData(cityName) {
+// Function to fetch weather data by city name
+async function getDataByCity(cityName) {
     try {
         const response = await fetch(
             `https://api.weatherapi.com/v1/current.json?key=214f28f38b8441c9aa923049240605&q=${cityName}&aqi=yes`
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    } catch (error) {
+        console.error("Failed to fetch data:", error);
+        alert("Failed to fetch data. Please try again later.");
+    }
+}
+
+// Function to fetch weather data by coordinates
+async function getDataByCoords(lat, lon) {
+    try {
+        const response = await fetch(
+            `https://api.weatherapi.com/v1/current.json?key=214f28f38b8441c9aa923049240605&q=${lat},${lon}&aqi=yes`
         );
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -73,8 +90,27 @@ searchButton.addEventListener("click", async () => {
     // Get the city name from the input field
     let input = cityName.value;
     // Fetch weather data
-    const result = await getData(input);
+    const result = await getDataByCity(input);
 
     // Update the DOM with the fetched data
     updateWeatherDetails(result);
+});
+
+// Event listener for the location button
+locationButton.addEventListener("click", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                const result = await getDataByCoords(latitude, longitude);
+                updateWeatherDetails(result);
+            },
+            (error) => {
+                console.error("Error getting location:", error);
+                alert("Failed to get location. Please try again later.");
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
 });
