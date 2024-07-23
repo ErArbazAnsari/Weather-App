@@ -15,9 +15,6 @@ Check out the live demo of the app here.
 
 Installation
 Clone the repository:
-
-sh
-Copy code
 git clone https://github.com/ErArbazAnsari/Weather-App.git
 cd Weather-App
 Open index.html:
