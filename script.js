@@ -8,7 +8,9 @@ async function getData(cityName) {
     const response = await fetch(
         `http://api.weatherapi.com/v1/current.json?key=214f28f38b8441c9aa923049240605&q=${cityName}&aqi=yes`
     );
-    return response.json();
+    const data = response.json();
+    // console.log(data)
+    return data;
 }
 
 // Function to update the DOM with fetched data
