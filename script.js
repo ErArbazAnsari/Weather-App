@@ -6,10 +6,9 @@ const weatherDetails = document.getElementById("weatherDetails");
 // Function to fetch weather data
 async function getData(cityName) {
     const response = await fetch(
-        `https://api.weatherapi.com/v1/current.json?key=214f28f38b8441c9aa923049240605&q=${cityName}&aqi=yes`
+        `https://www.api.weatherapi.com/v1/current.json?key=214f28f38b8441c9aa923049240605&q=${cityName}&aqi=yes`
     );
-    const data = response.json();
-    return data;
+    return response.json();
 }
 
 // Function to update the DOM with fetched data
